@@ -1,0 +1,22 @@
+{
+    "name":        "scalephp/kernel",
+    "description": "Kernel PHP, base of it all.",
+    "homepage":    "https://scalephp.github.io/kernel/",
+    "license":     "MIT",
+    "authors": [
+            {
+                "name":     "scalephp",
+                "role":     "developer",
+                "homepage": "https://scalephp.github.io/kernel/"
+            }
+    ],
+    "support": {
+            "issues": "https://github.com/scalephp/kernel/issues",
+            "source": "https://github.com/scalephp/kernel"
+    },
+    "autoload": {
+            "psr-4": {
+                    "Scale\\Kernel\\": "classes/"
+            }            
+    }
+}
