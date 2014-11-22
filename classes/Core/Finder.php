@@ -11,7 +11,7 @@
 trait Finder
 {
     /**
-     * 
+     *
      * @param  path   $path  Relative locations to search for files
      * @param  string $scope 'application', 'kli', or none for full scope
      * @return array
@@ -23,12 +23,12 @@ trait Finder
         foreach ($this->getDirs($scope) as $dir) {
 
             $search_dir = \App\PATH.$dir.$path;
-            
+
             if (!file_exists($search_dir)) {
                 continue;
             }
-            
-            $iterator = $this->getDirectoryIterator($search_dir, true);
+
+            $iterator = $this->getDirectoryIterator($search_dir, $recursive);
 
             foreach ($iterator as $file) {
 
@@ -44,7 +44,7 @@ trait Finder
     }
 
     /**
-     * 
+     *
      * @param  string $scope
      * @return array
      */
@@ -64,9 +64,9 @@ trait Finder
         }
         return $dirs;
     }
-    
+
     /**
-     * 
+     *
      * @param string $path
      * @param bool   $recursive
      * @return \IteratorIterator
@@ -81,8 +81,8 @@ trait Finder
         } else {
             $iterator = new \IteratorIterator(
                 new \DirectoryIterator($path)
-            );                
-        }   
+            );
+        }
         return $iterator;
     }
 }
