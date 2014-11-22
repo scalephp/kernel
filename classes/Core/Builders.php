@@ -1,4 +1,5 @@
 <?php namespace Scale\Kernel\Core;
+
 /**
  * DI Builders
  *
@@ -16,18 +17,22 @@ use Scale\Kernel\Core\RuntimeException;
 trait Builders
 {
     /**
+     * Closures used to build classes
      *
      * @var array
      */
     protected $builders = [];
 
     /**
+     * Instance variables
      *
      * @var array
      */
     protected $instances = [];
 
     /**
+     * Returns a named value from $instances, if not set then returns the
+     * builder for that key
      *
      * @param string $name
      * @return mixed
@@ -42,6 +47,7 @@ trait Builders
     }
 
     /**
+     * Sets a builder Closure or instance value for a given key
      *
      * @param string $name
      * @param mixed  $value
@@ -58,6 +64,8 @@ trait Builders
     }
 
     /**
+     * If its present in instances, return it, else call its builder
+     * to create a new instance
      *
      * @param string $name
      * @param array  $arguments
@@ -113,12 +121,14 @@ trait Builders
 
     /**
      *
-     * @param type $name
-     * @param type $instance
+     * @param string $name
+     * @param mixed  $instance
+     * @return BuilderInterface
      */
     public function setInstance($name, $instance)
     {
         $this->instances[$name] = $instance;
+        return $this;
     }
 
     /**

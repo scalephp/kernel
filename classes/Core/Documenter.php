@@ -1,4 +1,5 @@
 <?php namespace Scale\Kernel\Core;
+
 /**
  * Application Documenter
  *
@@ -10,25 +11,30 @@
 
 trait Documenter
 {
-    
+
     /**
-     * 
+     *
      * @param string $view
      * @param array  $options
      * @param string $class
      * @return string
      */
-    public function document($view, $options, $class)
+    public function document($ns, $view, $options, $class)
     {
         $inspector = new \ReflectionClass($this);
 
         list($description, $tags) = $this->parseDoccomment($inspector->getDocComment());
 
-        $doc = $this->view($view)
-            ->set('description', $description)
-            ->set('tags', (array) $tags)
-            ->set('options', $options)
-            ->set('class', $class);
+        $doc = $this->view(
+                $view,
+                [
+                    'description' => $description,
+                    'tags' => (array) $tags,
+                    'options' => $options,
+                    'class' => $class
+                ],
+                $ns
+        );
 
         return $doc;
     }

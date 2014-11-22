@@ -1,4 +1,5 @@
 <?php namespace Scale\Kernel\Interfaces;
+
 /**
  * DI Builders
  *

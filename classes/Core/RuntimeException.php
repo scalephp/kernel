@@ -1,4 +1,5 @@
 <?php namespace Scale\Kernel\Core;
+
 /**
  * Runtime Exception
  *

@@ -1,6 +1,7 @@
 <?php namespace Scale\Kernel\Core;
+
 /**
- * kernel Application
+ * Scale Application
  *
  * @package    Kernel
  * @category   Base
@@ -22,6 +23,7 @@ class Application implements BuilderInterface
      */
     public function __construct($api)
     {
+        // Loads DI configuration
         $this->loadBuilders();
         
         // Use Builder to find executor for the given client
@@ -29,11 +31,10 @@ class Application implements BuilderInterface
     }
     
     /**
-     * 
+     * Execute the application handler
      */
     public function execute()
     {
-
         $this->executor()->prepare($this)->execute();
     }
 }

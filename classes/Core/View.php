@@ -1,6 +1,4 @@
-<?php
-
-namespace Scale\Kernel\Core;
+<?php namespace Scale\Kernel\Core;
 
 class View
 {
