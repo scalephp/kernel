@@ -8,26 +8,18 @@
  * @author     Scale Team
  */
 
-use Scale\Kernel\Interfaces\BuilderInterface;
+use Scale\Kernel\Interfaces\ExecutorInterface;
 
-class Application implements BuilderInterface
+class Application
 {
     /**
-     * DI Trait
-     */
-    use Builders;
-
-    /**
      *
-     * @param string $api
+     * @param string $executor
      */
-    public function __construct($api)
+    public function __construct(ExecutorInterface $executor)
     {
-        // Loads DI configuration
-        $this->loadBuilders();
-        
         // Use Builder to find executor for the given client
-        $this->executor = $this->executor($api);
+        $this->executor = $executor;
     }
     
     /**
@@ -35,6 +27,6 @@ class Application implements BuilderInterface
      */
     public function execute()
     {
-        $this->executor()->prepare($this)->execute();
+        $this->executor->prepare()->execute();
     }
 }
