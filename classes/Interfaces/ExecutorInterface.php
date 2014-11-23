@@ -9,11 +9,10 @@
  * @category   Base
  * @author     Scale Team
  */
-use Scale\Kernel\Core\Application;
 
 interface ExecutorInterface
 {
-    public function execute();
+    public function prepare();
     
-    public function prepare(Application $app);
+    public function execute();
 }
