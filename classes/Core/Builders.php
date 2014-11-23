@@ -77,6 +77,10 @@ trait Builders
             return $this->instances[$name];
         }
 
+        if (substr($name, 0, 5) == 'build') {
+            return $this->newInstance(strtolower(substr($name, 5)), $arguments);
+        }
+
         return $this->callBuilder($name, $arguments);
     }
 
@@ -129,6 +133,16 @@ trait Builders
     {
         $this->instances[$name] = $instance;
         return $this;
+    }
+
+    /**
+     *
+     * @param string $name
+     * @param array  $params
+     */
+    public function newInstance($name, array $params = [])
+    {
+        return $this->setInstance($name, $this->callBuilder($name, $params));
     }
 
     /**
@@ -190,10 +204,20 @@ trait Builders
 
             if ($param_class) {
 
-                $param_name = ($param_class->name == 'Closure') ? $param->name : strtolower($param_class->name);
+                if ($param_class->name == 'Closure') {
 
-                // Get from trait's parent object
-                $local = $this->$param_name;
+                    $param_name = $param->name;
+                    // Get from trait's parent object
+                    $local = $this->$param_name;
+
+                } else {
+
+                    $param_name = strtolower($param_class->name);
+                    $local = $this->$param_name;
+                    if ($local instanceof \Closure) {
+                        $local = $local();
+                    }
+                }
 
                 // If we have a local value, set it, else create a new one
                 $dependencies[] = is_object($local) ? $local : $param_class->newInstance();
@@ -226,6 +250,6 @@ trait Builders
      */
     protected function loadBuilders()
     {
-        $this->builders = require \App\PATH.'/config/builders.php';
+        $this->builders = require \App\PATH.'/etc/builders.php';
     }
 }
