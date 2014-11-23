@@ -1,10 +1,7 @@
 <?php namespace Scale\Kernel\Interfaces;
 
 /**
- * DI Builders
- *
- * Used to provide classes a generic container and transfer methods for
- * dependencies and instances.
+ * Trait that allows classes to find files in a given scope.
  *
  * @package    Kernel
  * @category   Base
