@@ -11,6 +11,8 @@
  * @author     Scale Team
  */
 
+use Closure;
+
 interface BuilderInterface
 {
     /**
@@ -37,17 +39,17 @@ interface BuilderInterface
     /**
      *
      * @param string $name
-     * @return \Closure
+     * @return Closure
      */
     public function getBuilder($name);
 
     /**
      *
      * @param string   $name
-     * @param \Closure $builder
+     * @param Closure $builder
      * @return mixed
      */
-    public function setBuilder($name, \Closure $builder);
+    public function setBuilder($name, Closure $builder);
 
     /**
      *

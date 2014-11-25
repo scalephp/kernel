@@ -26,14 +26,14 @@ trait Documenter
         list($description, $tags) = $this->parseDoccomment($inspector->getDocComment());
 
         $doc = $this->view(
-                $view,
-                [
-                    'description' => $description,
-                    'tags' => (array) $tags,
-                    'options' => $options,
-                    'class' => $class
-                ],
-                $ns
+            $view,
+            [
+                'description' => $description,
+                'tags' => (array) $tags,
+                'options' => $options,
+                'class' => $class
+            ],
+            $ns
         );
 
         return $doc;
