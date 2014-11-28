@@ -40,10 +40,7 @@ trait Builders
      */
     public function __get($name)
     {
-        if (isset($this->instances[$name])) {
-            return $this->instances[$name];
-        }
-        return $this->getBuilder($name);
+        return ($i = $this->getInstance($name)) ? $i : $this->getBuilder($name);
     }
 
     /**
@@ -163,6 +160,16 @@ trait Builders
     {
         $this->instances[$name] = $instance;
         return $this;
+    }
+
+    /**
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getInstance($name)
+    {
+        return isset($this->instances[$name]) ? $this->instances[$name] : null;
     }
 
     /**
