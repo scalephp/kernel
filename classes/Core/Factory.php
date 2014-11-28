@@ -11,9 +11,6 @@ class Factory extends Container
      */
     public function factory($name)
     {
-        if (class_exists($name)) {
-
-            return $this->constructInject($name);
-        }
+        return $this->constructInject($name);
     }
 }
