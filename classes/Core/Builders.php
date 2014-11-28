@@ -134,7 +134,20 @@ trait Builders
     public function callBuilder($name, array $params = [])
     {
         if (isset($this->builders[$name])) {
-            return call_user_func_array($this->builders[$name], $params);
+            $count = count($params);
+            if ($count === 0) {
+                return $this->builders[$name]();
+            } elseif ($count === 1) {
+                return $this->builders[$name]($params[0]);
+            } elseif ($count === 2) {
+                return $this->builders[$name]($params[0], $params[1]);
+            } elseif ($count === 3) {
+                return $this->builders[$name]($params[0], $params[1], $params[2]);
+            } elseif ($count === 4) {
+                return $this->builders[$name]($params[0], $params[1], $params[2], $params[3]);
+            } else {
+                return call_user_func_array($this->builders[$name], $params);
+            }
         }
         throw new RuntimeException("Call to undefind method $name");
     }
@@ -265,16 +278,16 @@ trait Builders
         if ($class->name == 'Closure') {
 
             // Get from trait's parent object
-            $local = $this->{$param->name};
+            $local = $this->__get($param->name);
 
         // We need an instance, not a builder
         } else {
 
-            $local = $this->{strtolower($class->name)};
+            $local = $this->__get(strtolower($class->name));
 
             // If we have a local builder, execute it to get a new instace
             if ($local instanceof Closure) {
-                $local = $local();
+                $local = call_user_func($local);
             }
         }
         return $local;
@@ -295,6 +308,6 @@ trait Builders
      */
     protected function appConfig($name)
     {
-        return require \App\PATH."/etc/{$name}.php";
+        return require $this->path."/config/{$name}.php";
     }
 }

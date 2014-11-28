@@ -50,7 +50,7 @@ trait Finder
      */
     public function getDirs($scope)
     {
-        $scopes_config = require \App\PATH.'/etc/scopes.php';
+        $scopes_config = require \App\PATH.'/config/scopes.php';
 
         if ($scope) {
 

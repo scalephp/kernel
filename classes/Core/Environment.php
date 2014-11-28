@@ -13,13 +13,13 @@ class Environment
 {
     /**
      *
-     * @var type 
+     * @var type
      */
     protected $api;
-    
+
     /**
      *
-     * @var type 
+     * @var type
      */
     protected $server_http = [
         'HTTP_HOST',
@@ -34,47 +34,47 @@ class Environment
         'REMOTE_ADDR',
         'REQUEST_URI',
     ];
-    
+
     /**
      *
-     * @var type 
+     * @var type
      */
     protected $server_cli = [
         'argv',
         'argc',
-        
+
     ];
 
     /**
      *
-     * @var type 
+     * @var type
      */
     protected $server = [];
 
     /**
-     * 
+     *
      */
     public function __construct()
     {
         $this->api = (PHP_SAPI == 'cli' || PHP_SAPI == 'cli-server') ? 'cli' : 'http';
-        
+
         $this->loadServer($this->api);
     }
-    
+
     /**
-     * 
+     *
      * @param type $api
      */
     public function loadServer($api)
     {
         foreach ($this->{"server_$api"} as $param) {
-            
+
             $this->server[$param] = filter_input(INPUT_SERVER, $param, FILTER_SANITIZE_STRING);
         }
     }
-    
+
     /**
-     * 
+     *
      * @param string $name
      * @return mixed
      */
@@ -82,9 +82,9 @@ class Environment
     {
         return isset($this->server[$name]) ? $this->server[$name] : null;
     }
-    
+
     /**
-     * 
+     *
      * @return string
      */
     public function getApi()
