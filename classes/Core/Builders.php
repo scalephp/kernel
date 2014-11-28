@@ -12,6 +12,7 @@
  */
 
 use Closure;
+use ReflectionParameter;
 use Scale\Kernel\Interfaces\BuilderInterface;
 use Scale\Kernel\Core\RuntimeException;
 
