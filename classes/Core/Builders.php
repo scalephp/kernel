@@ -12,6 +12,7 @@
  */
 
 use Closure;
+use ReflectionParameter;
 use Scale\Kernel\Interfaces\BuilderInterface;
 use Scale\Kernel\Core\RuntimeException;
 
@@ -277,7 +278,7 @@ trait Builders
      * @param ReflectionParameter $param
      * @return mixed
      */
-    protected function getLocalValue($param)
+    protected function getLocalValue(ReflectionParameter $param)
     {
         $class = $param->getClass();
 
