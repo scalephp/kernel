@@ -9,16 +9,21 @@ class Path
     protected $path;
 
     /**
-     * 
+     *
      * @param string $path
      */
     public function __construct($path = null)
     {
         $this->path = ($path) ?: dirname($_SERVER['DOCUMENT_ROOT']."/../../");
     }
-    
+
+    public function __toString()
+    {
+        return $this->path;
+    }
+
     /**
-     * 
+     *
      * @return string
      */
     public function get()

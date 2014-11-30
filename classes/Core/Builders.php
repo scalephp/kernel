@@ -33,6 +33,12 @@ trait Builders
      */
     protected $instances = [];
 
+    protected $modes = [
+        'file-load' => true,
+        'apc-get'  => false,
+        'apc-load'  => false,
+    ];
+
     /**
      * Returns a named value from $instances, if not set then returns the
      * builder for that key
@@ -106,6 +112,20 @@ trait Builders
     {
         if (isset($this->builders[$name])) {
             return $this->builders[$name];
+        } elseif($this->modes['apc-get']) {
+            $s = false;
+            $key = "builder::$name";
+            $b = apc_fetch($key, $s);
+            if (!$s || !$b) {
+                $filename = strtolower(str_replace('\\', '/', $name));
+                $path = "{$this->path}/config/factories/$filename.php";
+                $b = file_get_contents($path);
+                $b = str_replace('<?php', '', $b);
+                apc_store($key, $b);
+            }
+            eval($b);
+            $f = explode('\\', $name);
+            return $this->builders[$name] = ${array_pop($f)};
         }
     }
 
@@ -119,6 +139,18 @@ trait Builders
     public function setBuilder($name, Closure $builder)
     {
         $this->builders[$name] = $builder;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param type $array
+     * @return type
+     */
+    public function setBuilders($array)
+    {
+        $this->builders = $array;
 
         return $this;
     }
@@ -200,7 +232,7 @@ trait Builders
 
     /**
      * Return classes required in the given class' constructor
-     * 
+     *
      * @param  bool $lowercase
      * @return array
      */
@@ -311,7 +343,17 @@ trait Builders
      */
     protected function loadBuilders()
     {
-        $this->builders = $this->appConfig('builders');
+        if ($this->modes['apc-load']) {
+            $r = apc_fetch('runspace::', $s);
+            if (!$s || !$r) {
+                $r = file_get_contents($this->path.'/config/runspace.php');
+                apc_store('runspace::', $r);
+            }
+            eval($r);
+            $this->builders = $runspace;
+        } elseif ($this->modes['file-load']) {
+            $this->builders = $this->appConfig('builders');
+        }
     }
 
     /**
