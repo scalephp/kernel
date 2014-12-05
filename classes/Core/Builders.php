@@ -13,6 +13,7 @@
 
 use Closure;
 use ReflectionClass;
+use ReflectionFunction;
 use ReflectionParameter;
 use Scale\Kernel\Interfaces\BuilderInterface;
 use Scale\Kernel\Core\RuntimeException;
@@ -100,6 +101,15 @@ trait Builders
 
         // Call a builder with the same name as the __call() method
         return $this->callBuilder($name, $arguments);
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function getBuilders()
+    {
+        return $this->builders;
     }
 
     /**
@@ -231,6 +241,16 @@ trait Builders
     }
 
     /**
+     *
+     * @param BuilderInterface $consumer
+     */
+    public function inform(BuilderInterface $consumer)
+    {
+        $consumer->path = $this->path;
+        $consumer->setBuilders($this->getBuilders());
+    }
+
+    /**
      * Return classes required in the given class' constructor
      *
      * @param  bool $lowercase
@@ -282,7 +302,7 @@ trait Builders
 
             // Else, let's instantiate via autoloader
             } elseif ($pc = $param->getClass()) {
-                $dependencies[] = $pc->newInstance();
+                $dependencies[] = $this->constructInject($pc->name);
 
             // If it isn't an object, let's check for a default scalar
             } elseif ($param->isDefaultValueAvailable()) {
@@ -294,7 +314,7 @@ trait Builders
 
             // We can't build this class correctly, fail
             } else {
-                throw new RuntimeException('Unable to resolve parameter');
+                throw new RuntimeException("Unable to resolve parameter");
             }
         }
 
@@ -332,7 +352,19 @@ trait Builders
 
             // If we have a local builder, execute it to get a new instace
             if ($local instanceof Closure) {
-                $local = $local();
+
+                $reflection = new ReflectionFunction($local);
+                $arguments  = $reflection->getParameters();
+
+                if ($arguments) {
+                    $d = [];
+                    foreach ($arguments as $arg) {
+                        $d[] = $this->getLocalValue($arg);
+                    }
+                    $local = call_user_func_array($local, $d);
+                } else {
+                    $local = $local();
+                }
             }
         }
         return $local;
