@@ -12,9 +12,11 @@ class Container implements BuilderInterface
 
     protected $path;
 
-    public function __construct(Path $path = null)
+    public function __construct($path = null)
     {
-        if ($path) {
+        if (is_string($path)) {
+            $this->path = $path;
+        } elseif (is_object($path)) {
             $this->path = $path->get();
         } else {
             $this->path = (new Path)->get();
