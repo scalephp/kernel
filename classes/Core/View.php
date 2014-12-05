@@ -29,7 +29,7 @@ class View
     {
         $this->name = $name;
                 
-        $this->path =  (($ns) ?: namespace\PATH)."/views/$name.php";
+        $this->path =  (($ns === null) ? namespace\PATH : $ns)."/views/$name.php";
         $this->params = $params;
     }
 
