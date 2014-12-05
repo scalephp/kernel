@@ -12,11 +12,8 @@ class RuntimeException extends \Exception
 {
     public static function handler($e)
     {
-        $msg = $e->getMessage().PHP_EOL.$e->getTrace().PHP_EOL;
-
-        fwrite(STDOUT, $msg);
-        fwrite(STDERR, $msg);
-
-        throw $e;
+        print '<pre>'.$e->getMessage().':'.$e->getLine().PHP_EOL;
+        print_r($e->getTrace());
+        throw new \Exception;
     }
 }
