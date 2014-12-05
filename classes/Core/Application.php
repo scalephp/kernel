@@ -14,19 +14,42 @@ class Application
 {
     /**
      *
+     * @var ExecutorInterface
+     */
+    protected $executor;
+
+
+    /**
+     *
      * @param string $executor
      */
     public function __construct(ExecutorInterface $executor)
     {
-        // Use Builder to find executor for the given client
         $this->executor = $executor;
     }
-    
+
+    /**
+     * Use Builder to find executor for the given client
+     */
+    public function setExecutor(ExecutorInterface $executor)
+    {
+        $this->executor = $executor;
+    }
+
+    /**
+     *
+     * @return ExecutorInterface
+     */
+    public function getExecutor()
+    {
+        return $this->executor;
+    }
+
     /**
      * Execute the application handler
      */
     public function execute()
     {
-        $this->executor->prepare()->execute();
+        return $this->executor->prepare()->execute();
     }
 }
