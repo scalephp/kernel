@@ -14,7 +14,15 @@ class Path
      */
     public function __construct($path = null)
     {
-        $this->path = ($path) ?: dirname($_SERVER['DOCUMENT_ROOT']."/../../");
+        if ($path !== null) {
+            $this->path = $path;
+        } else{
+            if ($_SERVER['DOCUMENT_ROOT']) {
+               $this->path = dirname($_SERVER['DOCUMENT_ROOT']."/../../");
+            } else {
+               $this->path = realpath(__DIR__."/../../../../..");
+            }
+        }
     }
 
     public function __toString()
