@@ -69,7 +69,7 @@ class Environment
     {
         foreach ($this->{"server_$api"} as $param) {
 
-            $this->server[$param] = filter_input(INPUT_SERVER, $param, FILTER_SANITIZE_STRING);
+            $this->server[$param] = isset($_SERVER[$param]) ? $_SERVER[$param] : null;
         }
     }
 
